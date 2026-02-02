@@ -44,7 +44,7 @@ function CartPage({ cart, removeFromCart }) {
       alert('Cart is empty. Please add items before placing an order.');
       return;
     }
-    navigate('/confirmation', { state: { cart: cartItems } });
+    navigate('/confirmation', { state: { cartItems } });
   };
 
   const totals = getTotals();

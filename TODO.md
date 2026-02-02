@@ -1,14 +1,14 @@
 # Pizza & Breads Ordering Portal - To-Do List
 
 ## Core Pages & Navigation
-- [ ] Create landing page (Open website)
-- [ ] Build menu page with category navigation
-  - [ ] Category 1
-  - [ ] Category 2
-  - [ ] Category 3
-- [ ] Build product listing page
-- [ ] Build shopping cart page
-- [ ] Build order confirmation page
+- [x] Create landing page (Open website)
+- [x] Build menu page with category navigation
+  - [x] Category 1
+  - [x] Category 2
+  - [x] Category 3
+- [x] Build product listing page
+- [x] Build shopping cart page
+- [x] Build order confirmation page
 
 ## Product Management
 - [x] Display products with quantity selector
@@ -17,16 +17,16 @@
 - [x] Store cart items with prices
 
 ## Cart Features
-- [ ] Display items in cart
-- [ ] Show prices for cart items
-- [ ] Calculate total price
-- [ ] Implement Place Order button
+- [x] Display items in cart
+- [x] Show prices for cart items
+- [x] Calculate total price
+- [x] Implement Place Order button
 
 ## Order Processing
-- [ ] Create order confirmation page
-- [ ] Generate order number/code
-- [ ] Add order number to orders database
-- [ ] Create order history system
+- [x] Create order confirmation page
+- [x] Generate order number/code
+- [x] Add order number to orders database
+- [x] Create order history system
 
 ## User Features
 - [ ] Implement user authentication

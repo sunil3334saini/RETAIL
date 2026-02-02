@@ -9,6 +9,7 @@ import MenuPage from './pages/MenuPage';
 import ProductListingPage from './pages/ProductListingPage';
 import CartPage from './pages/CartPage';
 import OrderConfirmationPage from './pages/OrderConfirmationPage';
+import OrderHistoryPage from './pages/OrderHistoryPage';
 
 // API base URL
 const API_BASE_URL = 'http://localhost:5000/api';
@@ -76,6 +77,7 @@ function App() {
           <Route path="/category/:categoryId" element={<ProductListingPage addToCart={addToCart} />} />
           <Route path="/cart" element={<CartPage cart={cart} removeFromCart={removeFromCart} />} />
           <Route path="/confirmation" element={<OrderConfirmationPage />} />
+          <Route path="/order-history" element={<OrderHistoryPage />} />
         </Routes>
       </div>
     </Router>
