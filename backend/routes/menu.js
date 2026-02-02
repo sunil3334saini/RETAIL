@@ -4,9 +4,9 @@ const router = express.Router();
 
 // Sample data - Replace with database queries in production
 const categories = [
-  { id: 1, name: 'Pizza', description: 'Delicious pizzas' },
-  { id: 2, name: 'Cold Drinks', description: 'Refreshing beverages' },
-  { id: 3, name: 'Breads', description: 'Fresh baked breads' }
+  { id: 1, name: 'Pizza', description: 'Delicious pizzas', icon: '🍕' },
+  { id: 2, name: 'Cold Drinks', description: 'Refreshing beverages', icon: '🥤' },
+  { id: 3, name: 'Breads', description: 'Fresh baked breads', icon: '🍞' }
 ];
 
 const products = {

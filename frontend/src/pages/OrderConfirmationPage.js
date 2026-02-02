@@ -15,19 +15,20 @@ function OrderConfirmationPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const cartItems = location.state?.cartItems || [];
+  const orderType = location.state?.orderType || 'carryout';
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const saveOrder = async () => {
       if (cartItems.length > 0) {
-        const newOrder = await OrderService.createOrder(cartItems);
+        const newOrder = await OrderService.createOrder(cartItems, orderType);
         setOrder(newOrder);
       }
       setLoading(false);
     };
     saveOrder();
-  }, [cartItems]);
+  }, [cartItems, orderType]);
 
   if (loading) {
     return <div className="order-confirmation-page"><p>Processing order...</p></div>;
@@ -64,8 +65,14 @@ function OrderConfirmationPage() {
               <h2>{order.orderNumber}</h2>
             </div>
 
+            <div className="verification-code">
+              <p>Pickup Code:</p>
+              <h3>{order.verificationCode}</h3>
+            </div>
+
             <div className="order-info">
               <p>Your order has been received and will be prepared shortly.</p>
+              <p className="info-small">Order Type: <strong>{order.orderType.toUpperCase()}</strong></p>
               <p className="info-small">Order Date: {new Date(order.createdAt).toLocaleString()}</p>
               <p className="info-small">Status: <span className="status-badge">{order.status}</span></p>
             </div>

@@ -39,6 +39,6 @@
 - [x] Implement order status tracking
 
 ## Additional Features
-- [ ] Support for Pizza, Cold Drinks, and Breads categories
-- [ ] Carryout order option
-- [ ] Order confirmation with unique code/number
+- [x] Support for Pizza, Cold Drinks, and Breads categories
+- [x] Carryout order option
+- [x] Order confirmation with unique code/number

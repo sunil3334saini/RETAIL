@@ -77,6 +77,31 @@
   letter-spacing: 2px;
 }
 
+.verification-code {
+  background: white;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  border: 2px dashed #28a745;
+}
+
+.verification-code p {
+  color: #666;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.verification-code h3 {
+  font-size: 2rem;
+  color: #28a745;
+  font-family: monospace;
+  letter-spacing: 3px;
+  margin: 0;
+  font-weight: bold;
+  text-align: center;
+}
+
 .order-info p {
   color: #666;
   margin-bottom: 0.75rem;

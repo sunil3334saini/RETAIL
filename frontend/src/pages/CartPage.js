@@ -1,20 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CartService from '../services/CartService';
+import OrderTypeSelector from '../components/OrderTypeSelector';
 import './CartPage.css';
 
 /**
  * Cart Page Component
  * Displays shopping cart with:
  * - Items in cart with prices
- * - Quantity for each item
+ * - Order type selection (carryout/dine-in)
  * - Subtotal, tax, and total calculation
- * - Remove item functionality
  * - Place order button
  */
 function CartPage({ cart, removeFromCart }) {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState(cart);
+  const [orderType, setOrderType] = useState('carryout');
 
   // Update cart when prop changes
   useEffect(() => {
@@ -44,7 +45,7 @@ function CartPage({ cart, removeFromCart }) {
       alert('Cart is empty. Please add items before placing an order.');
       return;
     }
-    navigate('/confirmation', { state: { cartItems } });
+    navigate('/confirmation', { state: { cartItems, orderType } });
   };
 
   const totals = getTotals();
@@ -63,6 +64,8 @@ function CartPage({ cart, removeFromCart }) {
           </div>
         ) : (
           <div className="cart-content">
+            <OrderTypeSelector onSelectType={setOrderType} selectedType={orderType} />
+
             {/* Cart Items Table */}
             <div className="cart-items">
               <table className="cart-table">

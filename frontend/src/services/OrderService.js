@@ -10,7 +10,7 @@ const API_BASE_URL = 'http://localhost:5000/api/orders';
 
 class OrderService {
   /**
-   * Generate unique order number
+   * Generate unique order number with embedded code
    */
   static generateOrderNumber() {
     const timestamp = Date.now().toString(36).toUpperCase();
@@ -19,15 +19,25 @@ class OrderService {
   }
 
   /**
-   * Create new order
+   * Generate unique verification code (for pickup confirmation)
    */
-  static async createOrder(cartItems) {
+  static generateVerificationCode() {
+    return Math.random().toString(36).substr(2, 6).toUpperCase();
+  }
+
+  /**
+   * Create new order with order type
+   */
+  static async createOrder(cartItems, orderType = 'carryout') {
     const orderNumber = this.generateOrderNumber();
+    const verificationCode = this.generateVerificationCode();
     const currentUser = AuthService.getCurrentUser();
     
     const order = {
       id: orderNumber,
       orderNumber,
+      verificationCode,
+      orderType,
       userId: currentUser?.id || null,
       userName: currentUser?.name || 'Guest',
       items: cartItems,
