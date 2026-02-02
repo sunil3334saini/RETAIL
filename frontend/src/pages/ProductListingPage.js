@@ -1,114 +1,152 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import ProductCard from '../components/ProductCard';
+import CartService from '../services/CartService';
+import ProductService from '../services/ProductService';
 import './ProductListingPage.css';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+/**
+ * Product Listing Page Component
+ * 
+ * Displays all products for a selected category with:
+ * - Product cards with images and details
+ * - Quantity selector for each product
+ * - Add to Cart functionality
+ * - Clean state management using CartService
+ */
 
 // Category names mapping
-const categoryNames = {
+const CATEGORY_NAMES = {
   1: 'Pizza',
   2: 'Cold Drinks',
   3: 'Breads'
 };
 
-/**
- * Product Listing Page Component
- * - Displays products for selected category
- * - Shows product details (name, price, description)
- * - Allows adding products to cart with quantity selector
- */
 function ProductListingPage({ addToCart }) {
   const { categoryId } = useParams();
+  
+  // State management
   const [products, setProducts] = useState([]);
   const [quantities, setQuantities] = useState({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Fetch products for the category
+  /**
+   * Fetch products for the selected category on component mount or category change
+   */
   useEffect(() => {
-    fetchProducts();
-    // Initialize quantities for each product
+    const loadProducts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Fetch products from backend API
+        const fetchedProducts = await ProductService.fetchProductsByCategory(categoryId);
+        setProducts(fetchedProducts);
+        
+        // Initialize quantities to 1 for each product
+        const initialQuantities = {};
+        fetchedProducts.forEach(product => {
+          initialQuantities[product.id] = 1;
+        });
+        setQuantities(initialQuantities);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
   }, [categoryId]);
 
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get(`${API_BASE_URL}/menu/products/${categoryId}`);
-      setProducts(response.data);
-      
-      // Initialize quantities to 1 for each product
-      const initialQuantities = {};
-      response.data.forEach(product => {
-        initialQuantities[product.id] = 1;
-      });
-      setQuantities(initialQuantities);
-      setLoading(false);
-    } catch (error) {
-      console.error('Error fetching products:', error);
-      setLoading(false);
-    }
+  /**
+   * Handle quantity change for a product
+   * @param {number} productId - ID of the product
+   * @param {number} newQuantity - New quantity value
+   */
+  const handleQuantityChange = (productId, newQuantity) => {
+    setQuantities({
+      ...quantities,
+      [productId]: newQuantity
+    });
   };
 
-  // Handle quantity change
-  const handleQuantityChange = (productId, value) => {
-    const quantity = parseInt(value);
-    if (quantity > 0) {
+  /**
+   * Handle Add to Cart button click
+   * Uses CartService to manage cart state and localStorage
+   * @param {Object} product - Product object to add
+   * @param {number} quantity - Quantity to add
+   */
+  const handleAddToCart = (product, quantity) => {
+    try {
+      // Add to cart using CartService
+      CartService.addToCart(product, quantity);
+      
+      // Call parent component callback for UI updates
+      for (let i = 0; i < quantity; i++) {
+        addToCart(product);
+      }
+      
+      // Show success message
+      alert(`✓ Added ${quantity} x ${product.name} to cart!`);
+      
+      // Reset quantity selector to 1
       setQuantities({
         ...quantities,
-        [productId]: quantity
+        [product.id]: 1
       });
+    } catch (err) {
+      console.error('Error adding to cart:', err);
+      alert('Failed to add item to cart. Please try again.');
     }
   };
 
-  // Handle add to cart
-  const handleAddToCart = (product) => {
-    const quantity = quantities[product.id];
-    for (let i = 0; i < quantity; i++) {
-      addToCart(product);
-    }
-    alert(`Added ${quantity} x ${product.name} to cart!`);
-  };
+  // Loading state
+  if (loading) {
+    return (
+      <div className="container loading-container">
+        <p className="loading-text">Loading products...</p>
+      </div>
+    );
+  }
 
-  if (loading) return <div className="container"><p>Loading products...</p></div>;
+  // Error state
+  if (error) {
+    return (
+      <div className="container error-container">
+        <p className="error-text">⚠️ {error}</p>
+      </div>
+    );
+  }
+
+  // Empty state
+  if (products.length === 0) {
+    return (
+      <div className="container empty-container">
+        <p className="empty-text">No products found in this category.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="product-listing-page">
       <div className="container">
-        <h1>{categoryNames[categoryId]} Products</h1>
+        {/* Page Header */}
+        <h1>{CATEGORY_NAMES[categoryId]} Products</h1>
         <p className="products-subtitle">Select products and choose quantity</p>
 
+        {/* Products Grid */}
         <div className="products-grid">
           {products.map((product) => (
-            <div key={product.id} className="product-card">
-              <div className="product-image">
-                {categoryId === '1' && '🍕'}
-                {categoryId === '2' && '🥤'}
-                {categoryId === '3' && '🍞'}
-              </div>
-              
-              <h3 className="product-name">{product.name}</h3>
-              <p className="product-description">{product.description}</p>
-              
-              <div className="product-footer">
-                <span className="product-price">${product.price.toFixed(2)}</span>
-                
-                <div className="product-controls">
-                  <input
-                    type="number"
-                    min="1"
-                    value={quantities[product.id] || 1}
-                    onChange={(e) => handleQuantityChange(product.id, e.target.value)}
-                    className="quantity-input"
-                  />
-                  
-                  <button
-                    className="btn btn-primary add-to-cart-btn"
-                    onClick={() => handleAddToCart(product)}
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
-            </div>
+            <ProductCard
+              key={product.id}
+              product={product}
+              categoryId={categoryId}
+              quantity={quantities[product.id] || 1}
+              onQuantityChange={handleQuantityChange}
+              onAddToCart={handleAddToCart}
+            />
           ))}
         </div>
       </div>

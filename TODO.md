@@ -11,10 +11,10 @@
 - [ ] Build order confirmation page
 
 ## Product Management
-- [ ] Display products with quantity selector
-- [ ] Display product prices
-- [ ] Implement Add to Cart functionality
-- [ ] Store cart items with prices
+- [x] Display products with quantity selector
+- [x] Display product prices
+- [x] Implement Add to Cart functionality
+- [x] Store cart items with prices
 
 ## Cart Features
 - [ ] Display items in cart

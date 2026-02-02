@@ -16,6 +16,7 @@
   margin-bottom: 2rem;
 }
 
+/* Products Grid Layout */
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -23,73 +24,57 @@
   margin-top: 2rem;
 }
 
-.product-card {
-  background: white;
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s;
+/* Loading State */
+.loading-container {
   display: flex;
-  flex-direction: column;
-}
-
-.product-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.product-image {
-  font-size: 3rem;
-  text-align: center;
-  margin-bottom: 1rem;
-}
-
-.product-name {
-  font-size: 1.25rem;
-  color: #333;
-  margin-bottom: 0.5rem;
-  font-weight: bold;
-}
-
-.product-description {
-  color: #666;
-  font-size: 0.9rem;
-  margin-bottom: 1rem;
-  flex-grow: 1;
-}
-
-.product-footer {
-  margin-top: auto;
-}
-
-.product-price {
-  display: block;
-  font-size: 1.5rem;
-  color: #ff6b6b;
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-.product-controls {
-  display: flex;
-  gap: 0.5rem;
   align-items: center;
+  justify-content: center;
+  min-height: 400px;
 }
 
-.quantity-input {
-  width: 60px;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 1rem;
+.loading-text {
+  font-size: 1.2rem;
+  color: #666;
   text-align: center;
 }
 
-.add-to-cart-btn {
-  flex: 1;
-  padding: 0.75rem;
+/* Error State */
+.error-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
 }
 
+.error-text {
+  font-size: 1.2rem;
+  color: #d32f2f;
+  background-color: #ffebee;
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #d32f2f;
+  text-align: center;
+}
+
+/* Empty State */
+.empty-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.empty-text {
+  font-size: 1.2rem;
+  color: #666;
+  text-align: center;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -100,15 +85,8 @@
     font-size: 2rem;
   }
 
-  .product-image {
-    font-size: 2rem;
-  }
-
-  .product-name {
+  .products-subtitle {
     font-size: 1rem;
   }
-
-  .product-price {
-    font-size: 1.25rem;
-  }
 }
+

@@ -1,0 +1,136 @@
+.product-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Hover effect */
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Product Image/Icon */
+.product-image {
+  font-size: 3rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  line-height: 1;
+}
+
+/* Product Name */
+.product-name {
+  font-size: 1.25rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+/* Product Description */
+.product-description {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+  flex-grow: 1;
+  line-height: 1.4;
+}
+
+/* Product Footer - Contains price and controls */
+.product-footer {
+  margin-top: auto;
+}
+
+/* Product Price Display */
+.product-price {
+  display: block;
+  font-size: 1.5rem;
+  color: #ff6b6b;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* Product Controls Container */
+.product-controls {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Quantity Input Field */
+.quantity-input {
+  width: 60px;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  text-align: center;
+  font-weight: bold;
+  transition: border-color 0.3s;
+}
+
+.quantity-input:focus {
+  outline: none;
+  border-color: #ff6b6b;
+  box-shadow: 0 0 5px rgba(255, 107, 107, 0.3);
+}
+
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.quantity-input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Add to Cart Button */
+.add-to-cart-btn {
+  flex: 1;
+  padding: 0.75rem;
+  font-weight: bold;
+  transition: all 0.3s;
+}
+
+.add-to-cart-btn:active {
+  transform: scale(0.98);
+}
+
+/* Responsive Design */
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .product-card {
+    padding: 1rem;
+  }
+
+  .product-image {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .product-name {
+    font-size: 1rem;
+  }
+
+  .product-description {
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .product-price {
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .quantity-input {
+    width: 50px;
+    padding: 0.4rem;
+    font-size: 0.9rem;
+  }
+}
