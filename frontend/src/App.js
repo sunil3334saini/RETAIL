@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
+import AuthService from './services/AuthService';
 import './App.css';
 
 // Import pages
@@ -10,6 +11,8 @@ import ProductListingPage from './pages/ProductListingPage';
 import CartPage from './pages/CartPage';
 import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import OrderHistoryPage from './pages/OrderHistoryPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 // API base URL
 const API_BASE_URL = 'http://localhost:5000/api';
@@ -17,6 +20,7 @@ const API_BASE_URL = 'http://localhost:5000/api';
 function App() {
   const [cart, setCart] = useState([]);
   const [cartId] = useState('cart-' + Math.random().toString(36).substr(2, 9));
+  const [currentUser, setCurrentUser] = useState(AuthService.getCurrentUser());
 
   // Load cart from localStorage on app start
   useEffect(() => {
@@ -66,6 +70,21 @@ function App() {
               <Link to="/cart" className="cart-link">
                 🛒 Cart ({cartItemCount})
               </Link>
+              {currentUser ? (
+                <>
+                  <span className="user-name">👤 {currentUser.name}</span>
+                  <Link to="/order-history">History</Link>
+                  <a href="#logout" onClick={() => {
+                    AuthService.logout();
+                    setCurrentUser(null);
+                  }}>Logout</a>
+                </>
+              ) : (
+                <>
+                  <Link to="/login">Login</Link>
+                  <Link to="/register">Register</Link>
+                </>
+              )}
             </div>
           </div>
         </nav>
@@ -73,6 +92,8 @@ function App() {
         {/* Routes */}
         <Routes>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/menu" element={<MenuPage addToCart={addToCart} />} />
           <Route path="/category/:categoryId" element={<ProductListingPage addToCart={addToCart} />} />
           <Route path="/cart" element={<CartPage cart={cart} removeFromCart={removeFromCart} />} />

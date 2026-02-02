@@ -1,7 +1,9 @@
 /**
  * OrderService - Manages order data with localStorage and API integration
- * Handles order creation, retrieval, and history
+ * Handles order creation, retrieval, and history for both authenticated and guest users
  */
+
+import AuthService from './AuthService';
 
 const API_BASE_URL = 'http://localhost:5000/api/orders';
 
@@ -20,9 +22,13 @@ class OrderService {
    */
   static async createOrder(cartItems) {
     const orderNumber = this.generateOrderNumber();
+    const currentUser = AuthService.getCurrentUser();
+    
     const order = {
       id: orderNumber,
       orderNumber,
+      userId: currentUser?.id || null,
+      userName: currentUser?.name || 'Guest',
       items: cartItems,
       totals: this.calculateTotals(cartItems),
       createdAt: new Date().toISOString(),
@@ -102,10 +108,35 @@ class OrderService {
   }
 
   /**
+   * Get orders for authenticated user only
+   */
+  static getUserOrders() {
+    const currentUser = AuthService.getCurrentUser();
+    if (!currentUser) {
+      return [];
+    }
+    const orders = this.getOrdersFromStorage();
+    return orders.filter(order => order.userId === currentUser.id);
+  }
+
+  /**
+   * Search orders by order number or date
+   */
+  static searchOrders(query, userOnly = false) {
+    const orders = userOnly ? this.getUserOrders() : this.getOrdersFromStorage();
+    const lowerQuery = query.toLowerCase();
+    
+    return orders.filter(order =>
+      order.orderNumber.toLowerCase().includes(lowerQuery) ||
+      new Date(order.createdAt).toLocaleDateString().includes(query)
+    );
+  }
+
+  /**
    * Get recent orders
    */
-  static getRecentOrders(limit = 5) {
-    const orders = this.getOrdersFromStorage();
+  static getRecentOrders(limit = 5, userOnly = false) {
+    const orders = userOnly ? this.getUserOrders() : this.getOrdersFromStorage();
     return orders.reverse().slice(0, limit);
   }
 

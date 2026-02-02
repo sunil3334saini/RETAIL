@@ -1,31 +1,59 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import AuthService from '../services/AuthService';
 import OrderService from '../services/OrderService';
 import './OrderHistoryPage.css';
 
 /**
  * Order History Page Component
- * - Displays all previous orders
- * - Shows order details, dates, and status
- * - Allows viewing order details
+ * - Display user's orders (authenticated users only)
+ * - Search orders by order number or date
+ * - Show order details, items, totals
  */
 function OrderHistoryPage() {
   const navigate = useNavigate();
+  const currentUser = AuthService.getCurrentUser();
   const [orders, setOrders] = useState([]);
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   useEffect(() => {
+    if (!currentUser) {
+      navigate('/login');
+      return;
+    }
+
     const fetchOrders = async () => {
-      const allOrders = await OrderService.getAllOrders();
-      setOrders(allOrders.reverse());
+      const userOrders = OrderService.getUserOrders();
+      setOrders(userOrders.reverse());
+      setFilteredOrders(userOrders.reverse());
       setLoading(false);
     };
     fetchOrders();
-  }, []);
+  }, [currentUser, navigate]);
+
+  // Handle search
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    
+    if (query.trim() === '') {
+      setFilteredOrders(orders);
+    } else {
+      const results = OrderService.searchOrders(query, true);
+      setFilteredOrders(results.reverse());
+    }
+  };
 
   const handleOrderClick = (order) => {
     setSelectedOrder(selectedOrder?.id === order.id ? null : order);
+  };
+
+  const handleLogout = () => {
+    AuthService.logout();
+    navigate('/login');
   };
 
   if (loading) {
@@ -35,18 +63,47 @@ function OrderHistoryPage() {
   return (
     <div className="order-history-page">
       <div className="container history-container">
-        <h1>Order History</h1>
+        <div className="history-header">
+          <div>
+            <h1>Order History</h1>
+            <p>Welcome, {currentUser.name}!</p>
+          </div>
+          <button className="btn btn-logout" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
 
-        {orders.length === 0 ? (
+        <div className="search-box">
+          <input
+            type="text"
+            placeholder="Search by order number or date..."
+            value={searchQuery}
+            onChange={handleSearch}
+            className="search-input"
+          />
+          {searchQuery && (
+            <button
+              className="btn-clear"
+              onClick={() => {
+                setSearchQuery('');
+                setFilteredOrders(orders);
+              }}
+            >
+              Clear
+            </button>
+          )}
+        </div>
+
+        {filteredOrders.length === 0 ? (
           <div className="empty-history">
-            <p>No orders found</p>
+            <p>{searchQuery ? 'No orders found matching your search.' : 'No orders yet'}</p>
             <button className="btn btn-primary" onClick={() => navigate('/menu')}>
               Start Ordering
             </button>
           </div>
         ) : (
           <div className="orders-list">
-            {orders.map((order) => (
+            {filteredOrders.map((order) => (
               <div key={order.id} className="order-card">
                 <div className="order-card-header" onClick={() => handleOrderClick(order)}>
                   <div className="order-card-info">

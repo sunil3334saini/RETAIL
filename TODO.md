@@ -29,9 +29,9 @@
 - [x] Create order history system
 
 ## User Features
-- [ ] Implement user authentication
-- [ ] Enable order history for authenticated users
-- [ ] Add search functionality for order history
+- [x] Implement user authentication
+- [x] Enable order history for authenticated users
+- [x] Add search functionality for order history
 
 ## Integration & API
 - [ ] Distribute orders to kitchen via API
