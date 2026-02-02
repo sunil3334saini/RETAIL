@@ -30,9 +30,6 @@
   display: grid;
   grid-template-columns: 1fr 350px;
   gap: 2rem;
-};
-  grid-template-columns: 1fr 350px;
-  gap: 2rem;
 }
 
 /* Cart Items Table */
