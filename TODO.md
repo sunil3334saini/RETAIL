@@ -34,9 +34,9 @@
 - [x] Add search functionality for order history
 
 ## Integration & API
-- [ ] Distribute orders to kitchen via API
-- [ ] Create kitchen API tool integration
-- [ ] Implement order status tracking
+- [x] Distribute orders to kitchen via API
+- [x] Create kitchen API tool integration
+- [x] Implement order status tracking
 
 ## Additional Features
 - [ ] Support for Pizza, Cold Drinks, and Breads categories

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import OrderService from '../services/OrderService';
+import OrderStatusTracker from '../components/OrderStatusTracker';
 import './OrderConfirmationPage.css';
 
 /**
@@ -109,6 +110,8 @@ function OrderConfirmationPage() {
             </div>
           </div>
 
+          <OrderStatusTracker orderNumber={order.orderNumber} />
+
           <div className="confirmation-actions">
             <button className="btn btn-primary" onClick={() => navigate('/menu')}>
               Continue Shopping
@@ -124,7 +127,6 @@ function OrderConfirmationPage() {
       </div>
     </div>
   );
-}
 }
 
 export default OrderConfirmationPage;

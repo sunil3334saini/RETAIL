@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/AuthService';
 import OrderService from '../services/OrderService';
+import OrderStatusTracker from '../components/OrderStatusTracker';
 import './OrderHistoryPage.css';
 
 /**
@@ -118,6 +119,8 @@ function OrderHistoryPage() {
 
                 {selectedOrder?.id === order.id && (
                   <div className="order-card-details">
+                    <OrderStatusTracker orderNumber={order.orderNumber} />
+
                     <div className="items-section">
                       <h4>Items</h4>
                       <table className="history-table">

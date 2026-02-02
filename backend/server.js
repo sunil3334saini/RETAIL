@@ -15,11 +15,13 @@ app.use(bodyParser.json()); // Parse JSON request bodies
 const menuRoutes = require('./routes/menu');
 const cartRoutes = require('./routes/cart');
 const ordersRoutes = require('./routes/orders');
+const kitchenRoutes = require('./routes/kitchen');
 
 // Use routes
 app.use('/api/menu', menuRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/orders', ordersRoutes);
+app.use('/api/kitchen', kitchenRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

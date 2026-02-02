@@ -4,6 +4,7 @@
  */
 
 import AuthService from './AuthService';
+import KitchenService from './KitchenService';
 
 const API_BASE_URL = 'http://localhost:5000/api/orders';
 
@@ -43,8 +44,10 @@ class OrderService {
     // Save to backend
     try {
       await this.saveOrderToBackend(order);
+      // Send to kitchen
+      await KitchenService.sendOrderToKitchen(order);
     } catch (error) {
-      console.error('Error saving order to backend:', error);
+      console.error('Error saving order:', error);
     }
 
     return order;
@@ -138,6 +141,13 @@ class OrderService {
   static getRecentOrders(limit = 5, userOnly = false) {
     const orders = userOnly ? this.getUserOrders() : this.getOrdersFromStorage();
     return orders.reverse().slice(0, limit);
+  }
+
+  /**
+   * Get order status from kitchen
+   */
+  static async getOrderStatusFromKitchen(orderNumber) {
+    return await KitchenService.getKitchenOrderStatus(orderNumber);
   }
 
   /**

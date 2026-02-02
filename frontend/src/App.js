@@ -13,6 +13,7 @@ import OrderConfirmationPage from './pages/OrderConfirmationPage';
 import OrderHistoryPage from './pages/OrderHistoryPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import KitchenDashboard from './pages/KitchenDashboard';
 
 // API base URL
 const API_BASE_URL = 'http://localhost:5000/api';
@@ -99,6 +100,7 @@ function App() {
           <Route path="/cart" element={<CartPage cart={cart} removeFromCart={removeFromCart} />} />
           <Route path="/confirmation" element={<OrderConfirmationPage />} />
           <Route path="/order-history" element={<OrderHistoryPage />} />
+          <Route path="/kitchen" element={<KitchenDashboard />} />
         </Routes>
       </div>
     </Router>
